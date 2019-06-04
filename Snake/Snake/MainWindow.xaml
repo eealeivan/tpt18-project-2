@@ -5,15 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Snake"
         mc:Ignorable="d"
-        Title="Snake Game" Height="450" Width="800" Topmost="True" KeyDown="Window_KeyDown">
+        Title="Snake Game" 
+        ResizeMode="NoResize" Topmost="True" 
+        SizeToContent="WidthAndHeight"
+        KeyDown="Window_KeyDown">
     <Grid>
-        <Canvas Background="LightGreen">
-            <Rectangle 
+        <Canvas Name="board" 
+                Height="480" Width="480">            
+            <!--<Rectangle 
                 Name="rectangle1"
-                Height="75" Width="200"
-                Canvas.Top="20" Canvas.Left="20"
+                Height="30" Width="30"
+                Canvas.Top="300" Canvas.Left="300"
                 Fill="Green">                
-            </Rectangle>
+            </Rectangle>-->
         </Canvas>
     </Grid>
 </Window>
