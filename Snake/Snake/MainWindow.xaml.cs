@@ -55,33 +55,37 @@ namespace Snake
             Canvas.SetLeft(snake, coord);
         }
 
+        private void MoveSnake(
+            bool up, bool down, bool left, bool right)
+        {
+            if (up || down)
+            {
+                double currentTop = Canvas.GetTop(snake);
+                double newTop = up
+                    ? currentTop - CellSize
+                    : currentTop + CellSize;
+                Canvas.SetTop(snake, newTop);
+            }
+
+            if (left || right)
+            {
+                double currentLeft = Canvas.GetLeft(snake);
+                double newLeft = left
+                    ? currentLeft - CellSize
+                    : currentLeft + CellSize;
+                Canvas.SetLeft(snake, newLeft);
+            }
+        }
+
         private void Window_KeyDown(
             object sender, KeyEventArgs e)
         {
-            //if(e.Key == Key.Right)
-            //{
-            //    double currentLeft = Canvas.GetLeft(rectangle1);
-            //    double newLeft = currentLeft + 20;
-            //    Canvas.SetLeft(rectangle1, newLeft);
-            //}
-            //else if(e.Key == Key.Left)
-            //{
-            //    double currentLeft = Canvas.GetLeft(rectangle1);
-            //    double newLeft = currentLeft - 20;
-            //    Canvas.SetLeft(rectangle1, newLeft);
-            //}
-            //else if(e.Key == Key.Up)
-            //{
-            //    double currentTop = Canvas.GetTop(rectangle1);
-            //    double newTop = currentTop - 20;
-            //    Canvas.SetTop(rectangle1, newTop);
-            //}
-            //else if (e.Key == Key.Down)
-            //{
-            //    double currentTop = Canvas.GetTop(rectangle1);
-            //    double newTop = currentTop + 20;
-            //    Canvas.SetTop(rectangle1, newTop);
-            //}
+            bool up = e.Key == Key.Up;
+            bool down = e.Key == Key.Down;
+            bool left = e.Key == Key.Left;
+            bool right = e.Key == Key.Right;
+
+            MoveSnake(up, down, left, right);            
         }
     }
 }
