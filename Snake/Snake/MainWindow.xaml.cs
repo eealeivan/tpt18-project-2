@@ -45,12 +45,29 @@ namespace Snake
         private void Window_KeyDown(
             object sender, KeyEventArgs e)
         {
-            // Implement moving to all directions
             if(e.Key == Key.Right)
             {
                 double currentLeft = Canvas.GetLeft(rectangle1);
                 double newLeft = currentLeft + 20;
                 Canvas.SetLeft(rectangle1, newLeft);
+            }
+            else if(e.Key == Key.Left)
+            {
+                double currentLeft = Canvas.GetLeft(rectangle1);
+                double newLeft = currentLeft - 20;
+                Canvas.SetLeft(rectangle1, newLeft);
+            }
+            else if(e.Key == Key.Up)
+            {
+                double currentTop = Canvas.GetTop(rectangle1);
+                double newTop = currentTop - 20;
+                Canvas.SetTop(rectangle1, newTop);
+            }
+            else if (e.Key == Key.Down)
+            {
+                double currentTop = Canvas.GetTop(rectangle1);
+                double newTop = currentTop + 20;
+                Canvas.SetTop(rectangle1, newTop);
             }
         }
     }
