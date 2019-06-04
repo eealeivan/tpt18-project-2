@@ -12,12 +12,11 @@
     <Grid>
         <Canvas Name="board" 
                 Height="480" Width="480">            
-            <!--<Rectangle 
-                Name="rectangle1"
-                Height="30" Width="30"
-                Canvas.Top="300" Canvas.Left="300"
-                Fill="Green">                
-            </Rectangle>-->
+            <Rectangle 
+                Name="snake"
+                Fill="MediumBlue"
+                Panel.ZIndex="10">                
+            </Rectangle>
         </Canvas>
     </Grid>
 </Window>

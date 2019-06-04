@@ -18,6 +18,7 @@ namespace Snake
         {
             InitializeComponent();
             DrawBoardBackground();
+            InitSnake();
         }
 
         private void DrawBoardBackground()
@@ -43,6 +44,15 @@ namespace Snake
                     color = color == color1 ? color2 : color1;
                 }
             }
+        }
+
+        private void InitSnake()
+        {
+            snake.Height = CellSize;
+            snake.Width = CellSize;
+            double coord = CellCount * CellSize / 2;
+            Canvas.SetTop(snake, coord);
+            Canvas.SetLeft(snake, coord);
         }
 
         private void Window_KeyDown(
