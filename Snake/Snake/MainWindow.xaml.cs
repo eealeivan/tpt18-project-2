@@ -1,8 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Snake
 {
@@ -13,12 +15,18 @@ namespace Snake
     {
         const double CellSize = 30D;
         const int CellCount = 16;
+        DispatcherTimer timer;
 
         public MainWindow()
         {
             InitializeComponent();
             DrawBoardBackground();
             InitSnake();
+
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(2);
+            timer.Tick += Timer_Tick;
+            timer.Start();
         }
 
         private void DrawBoardBackground()
@@ -76,6 +84,11 @@ namespace Snake
                     : currentLeft + CellSize;
                 Canvas.SetLeft(snake, newLeft);
             }
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            MoveSnake(Direction.Up);
         }
 
         private void Window_KeyDown(
