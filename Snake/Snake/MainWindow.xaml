@@ -10,8 +10,17 @@
         SizeToContent="WidthAndHeight"
         KeyDown="Window_KeyDown">
     <Grid>
-        <Canvas Name="board" 
-                Height="480" Width="480">            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Label Name="lblSnakeDirection" FontWeight="Bold"></Label>
+        </StackPanel>
+        <Canvas 
+            Grid.Row="1"
+            Name="board" 
+            Height="480" Width="480">            
             <Rectangle 
                 Name="snake"
                 Fill="MediumBlue"

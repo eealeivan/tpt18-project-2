@@ -27,7 +27,7 @@ namespace Snake
             InitSnake();
 
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(0.5);
+            timer.Interval = TimeSpan.FromSeconds(2);
             timer.Tick += Timer_Tick;
             timer.Start();
         }
@@ -65,7 +65,14 @@ namespace Snake
             Canvas.SetTop(snake, coord);
             Canvas.SetLeft(snake, coord);
 
-            snakeDirection = Direction.Up;
+            DirectSnake(Direction.Up);
+        }
+
+        private void DirectSnake(Direction direction)
+        {
+            snakeDirection = direction;
+            lblSnakeDirection.Content =
+                $"Direction: {direction}";
         }
 
         private void MoveSnake(Direction direction)
@@ -118,7 +125,7 @@ namespace Snake
                     return;
             }
 
-            snakeDirection = direction;            
+            DirectSnake(direction);           
         }
 
         public enum Direction
