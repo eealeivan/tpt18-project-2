@@ -6,7 +6,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Snake
+namespace SnakeGame
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -17,14 +17,14 @@ namespace Snake
         const int CellCount = 16;
 
         DispatcherTimer timer;
-
-        Direction snakeDirection;
+        Snake snake;
 
         public MainWindow()
         {
             InitializeComponent();
             DrawBoardBackground();
-            InitSnake();
+            snake = new Snake(snakeShape, CellSize, CellCount);
+            snake.Init();
 
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(2);
@@ -56,51 +56,18 @@ namespace Snake
                 }
             }
         }
-
-        private void InitSnake()
-        {
-            snake.Height = CellSize;
-            snake.Width = CellSize;
-            double coord = CellCount * CellSize / 2;
-            Canvas.SetTop(snake, coord);
-            Canvas.SetLeft(snake, coord);
-
-            DirectSnake(Direction.Up);
-        }
-
-        private void DirectSnake(Direction direction)
-        {
-            snakeDirection = direction;
-            lblSnakeDirection.Content =
-                $"Direction: {direction}";
-        }
-
-        private void MoveSnake(Direction direction)
-        {
-            if (direction == Direction.Up || 
-                direction == Direction.Down)
-            {
-                double currentTop = Canvas.GetTop(snake);
-                double newTop = direction == Direction.Up
-                    ? currentTop - CellSize
-                    : currentTop + CellSize;
-                Canvas.SetTop(snake, newTop);
-            }
-
-            if (direction == Direction.Left || 
-                direction == Direction.Right)
-            {
-                double currentLeft = Canvas.GetLeft(snake);
-                double newLeft = direction == Direction.Left
-                    ? currentLeft - CellSize
-                    : currentLeft + CellSize;
-                Canvas.SetLeft(snake, newLeft);
-            }
-        }
+               
+        //private void DirectSnake(Direction direction)
+        //{
+        //    snakeDirection = direction;
+        //    lblSnakeDirection.Content =
+        //        $"Direction: {direction}";
+        //}
+               
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            MoveSnake(snakeDirection);
+            snake.Move();
         }
 
         private void Window_KeyDown(
@@ -125,15 +92,7 @@ namespace Snake
                     return;
             }
 
-            DirectSnake(direction);           
-        }
-
-        public enum Direction
-        {
-            Up,
-            Down,
-            Left,
-            Right
-        }
+            snake.ChangeDirection(direction);           
+        }        
     }
 }
