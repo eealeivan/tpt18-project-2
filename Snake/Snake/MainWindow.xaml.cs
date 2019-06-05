@@ -82,25 +82,22 @@ namespace Snake
             object sender, KeyEventArgs e)
         {
             Direction direction;
-            if(e.Key == Key.Up)
+            switch (e.Key)
             {
-                direction = Direction.Up;
-            }
-            else if (e.Key == Key.Down)
-            {
-                direction = Direction.Down;
-            }
-            else if (e.Key == Key.Left)
-            {
-                direction = Direction.Left;
-            }
-            else if (e.Key == Key.Right)
-            {
-                direction = Direction.Right;
-            }
-            else
-            {
-                return;
+                case Key.Up:
+                    direction = Direction.Up;
+                    break;
+                case Key.Down:
+                    direction = Direction.Down;
+                    break;
+                case Key.Left:
+                    direction = Direction.Left;
+                    break;
+                case Key.Right:
+                    direction = Direction.Right;
+                    break;
+                default:
+                    return;
             }
 
             MoveSnake(direction);            
