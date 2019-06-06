@@ -15,8 +15,9 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Label Name="lblGameStatus" FontWeight="Bold"></Label>
-            <Label Name="lblSnakeDirection" FontWeight="Bold"></Label>
+            <Label Name="lblGameStatus" FontWeight="Bold" FontSize="16"></Label>
+            <Label Name="lblPoints" FontWeight="Bold" FontSize="16"></Label>
+            <Label Name="lblSnakeDirection" FontWeight="Bold" FontSize="16"></Label>
         </StackPanel>
         <Canvas 
             Grid.Row="1"
@@ -27,6 +28,11 @@
                 Fill="MediumBlue"
                 Panel.ZIndex="10">                
             </Rectangle>
+            <Ellipse
+                Name="foodShape"
+                Fill="Red"
+                Panel.ZIndex="5">                
+            </Ellipse>
         </Canvas>
     </Grid>
 </Window>

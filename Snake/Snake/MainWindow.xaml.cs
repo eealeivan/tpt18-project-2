@@ -17,23 +17,31 @@ namespace SnakeGame
         const int CellCount = 16;
 
         DispatcherTimer timer;
+        Random rnd = new Random();
 
         GameStatus gameStatus;
+
+        int foodRow;
+        int foodCol;
 
         Direction snakeDirection;
         int snakeRow;
         int snakeCol;
 
+        int points;
+
         public MainWindow()
         {
             InitializeComponent();
             DrawBoardBackground();
+            InitFood();
             InitSnake();
+            ChangePoints(0);
 
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(0.5);
             timer.Tick += Timer_Tick;
-            timer.Start();
+            timer.Start();           
 
             ChangeGameStatus(GameStatus.Ongoing);
         }        
@@ -68,6 +76,22 @@ namespace SnakeGame
             gameStatus = newGameStatus;
             lblGameStatus.Content =
                 $"Status: {gameStatus}";
+        }
+
+        private void ChangePoints(int newPoints)
+        {
+            points = newPoints;
+            lblPoints.Content =
+                $"Points: {points}";
+        }
+
+        private void InitFood()
+        {
+            foodShape.Height = CellSize;
+            foodShape.Width = CellSize;
+            foodRow = rnd.Next(0, CellCount);
+            foodCol = rnd.Next(0, CellCount);
+            SetShape(foodShape, foodRow, foodCol);
         }
 
         private void InitSnake()
@@ -107,11 +131,22 @@ namespace SnakeGame
                     break;
             }
 
-            if(snakeRow < 0 || snakeRow >= CellCount ||
-                snakeCol < 0 || snakeCol >= CellCount)
+            bool outOfBoundaries =
+                snakeRow < 0 || snakeRow >= CellCount ||
+                snakeCol < 0 || snakeCol >= CellCount; 
+            if (outOfBoundaries)
             {
                 ChangeGameStatus(GameStatus.GameOver);
                 return;
+            }
+
+            bool food =
+                snakeRow == foodRow &&
+                snakeCol == foodCol;
+            if (food)
+            {
+                ChangePoints(points + 1);
+                InitFood();
             }
 
             SetShape(snakeShape, snakeRow, snakeCol);
