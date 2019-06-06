@@ -25,8 +25,7 @@ namespace SnakeGame
         int foodCol;
 
         Direction snakeDirection;
-        int snakeRow;
-        int snakeCol;
+        SnakePart snakePart = new SnakePart();
 
         int points;
 
@@ -98,9 +97,9 @@ namespace SnakeGame
             snakeShape.Height = CellSize;
             snakeShape.Width = CellSize;
             int index = CellCount / 2;
-            snakeRow = index;
-            snakeCol = index;
-            SetShape(snakeShape, snakeRow, snakeCol);
+            snakePart.Row = index;
+            snakePart.Col = index;
+            SetShape(snakeShape, snakePart.Row, snakePart.Col);
 
             ChangeSnakeDirection(Direction.Up);
         }
@@ -117,22 +116,22 @@ namespace SnakeGame
             switch (snakeDirection)
             {
                 case Direction.Up:
-                    snakeRow--;
+                    snakePart.Row--;
                     break;
                 case Direction.Down:
-                    snakeRow++;
+                    snakePart.Row++;
                     break;
                 case Direction.Left:
-                    snakeCol--;
+                    snakePart.Col--;
                     break;
                 case Direction.Right:
-                    snakeCol++;
+                    snakePart.Col++;
                     break;
             }
 
             bool outOfBoundaries =
-                snakeRow < 0 || snakeRow >= CellCount ||
-                snakeCol < 0 || snakeCol >= CellCount; 
+                snakePart.Row < 0 || snakePart.Row >= CellCount ||
+                snakePart.Col < 0 || snakePart.Col >= CellCount; 
             if (outOfBoundaries)
             {
                 ChangeGameStatus(GameStatus.GameOver);
@@ -140,15 +139,15 @@ namespace SnakeGame
             }
 
             bool food =
-                snakeRow == foodRow &&
-                snakeCol == foodCol;
+                snakePart.Row == foodRow &&
+                snakePart.Col == foodCol;
             if (food)
             {
                 ChangePoints(points + 1);
                 InitFood();
             }
 
-            SetShape(snakeShape, snakeRow, snakeCol);
+            SetShape(snakeShape, snakePart.Row, snakePart.Col);
         }
 
         private void SetShape(
