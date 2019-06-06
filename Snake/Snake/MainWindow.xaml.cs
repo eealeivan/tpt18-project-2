@@ -62,8 +62,7 @@ namespace SnakeGame
                     r.Width = CellSize;
                     r.Height = CellSize;
                     r.Fill = color;
-                    Canvas.SetTop(r, row * CellSize);
-                    Canvas.SetLeft(r, col * CellSize);
+                    SetShape(r, row, col);
                     board.Children.Add(r);
 
                     color = color == color1 ? color2 : color1;
