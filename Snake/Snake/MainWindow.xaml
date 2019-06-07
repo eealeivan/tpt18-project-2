@@ -22,12 +22,7 @@
         <Canvas 
             Grid.Row="1"
             Name="board" 
-            Height="480" Width="480">            
-            <Rectangle 
-                Name="snakeShape"
-                Fill="MediumBlue"
-                Panel.ZIndex="10">                
-            </Rectangle>
+            Height="480" Width="480">
             <Ellipse
                 Name="foodShape"
                 Fill="Red"

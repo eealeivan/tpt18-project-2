@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -25,7 +26,10 @@ namespace SnakeGame
         int foodCol;
 
         Direction snakeDirection;
-        SnakePart snakePart = new SnakePart();
+        int snakeHeadRow;
+        int snakeHeadCol;
+        LinkedList<Rectangle> snakeParts =
+            new LinkedList<Rectangle>();
 
         int points;
 
@@ -40,10 +44,10 @@ namespace SnakeGame
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(0.5);
             timer.Tick += Timer_Tick;
-            timer.Start();           
+            timer.Start();
 
             ChangeGameStatus(GameStatus.Ongoing);
-        }        
+        }
 
         private void DrawBoardBackground()
         {
@@ -94,14 +98,30 @@ namespace SnakeGame
 
         private void InitSnake()
         {
-            snakeShape.Height = CellSize;
-            snakeShape.Width = CellSize;
             int index = CellCount / 2;
-            snakePart.Row = index;
-            snakePart.Col = index;
-            SetShape(snakeShape, snakePart.Row, snakePart.Col);
+            for (int i = 0; i < 3; i++)
+            {
+                int row = index;
+                int col = index + i;
 
-            ChangeSnakeDirection(Direction.Up);
+                Rectangle r = new Rectangle();
+                r.Height = CellSize;
+                r.Width = CellSize;
+                r.Fill = Brushes.MediumBlue;
+                Panel.SetZIndex(r, 10);
+
+                SetShape(r, row, col);
+                board.Children.Add(r);
+                snakeParts.AddLast(r);
+
+                if(i == 0)
+                {
+                    snakeHeadRow = row;
+                    snakeHeadCol = col;
+                }
+            }
+
+            ChangeSnakeDirection(Direction.Left);
         }
 
         private void ChangeSnakeDirection(Direction direction)
@@ -112,42 +132,49 @@ namespace SnakeGame
         }
 
         private void MoveSnake()
-        {       
-            switch (snakeDirection)
-            {
-                case Direction.Up:
-                    snakePart.Row--;
-                    break;
-                case Direction.Down:
-                    snakePart.Row++;
-                    break;
-                case Direction.Left:
-                    snakePart.Col--;
-                    break;
-                case Direction.Right:
-                    snakePart.Col++;
-                    break;
-            }
+        {            
+            Rectangle newHead = snakeParts.Last.Value;
+            snakeParts.RemoveLast();
 
-            bool outOfBoundaries =
-                snakePart.Row < 0 || snakePart.Row >= CellCount ||
-                snakePart.Col < 0 || snakePart.Col >= CellCount; 
-            if (outOfBoundaries)
-            {
-                ChangeGameStatus(GameStatus.GameOver);
-                return;
-            }
+            snakeHeadCol--;
+            SetShape(newHead, snakeHeadRow, snakeHeadCol);
+            snakeParts.AddFirst(newHead);
+                       
+            //switch (snakeDirection)
+            //{
+            //    case Direction.Up:
+            //        snakePart.Row--;
+            //        break;
+            //    case Direction.Down:
+            //        snakePart.Row++;
+            //        break;
+            //    case Direction.Left:
+            //        snakePart.Col--;
+            //        break;
+            //    case Direction.Right:
+            //        snakePart.Col++;
+            //        break;
+            //}
 
-            bool food =
-                snakePart.Row == foodRow &&
-                snakePart.Col == foodCol;
-            if (food)
-            {
-                ChangePoints(points + 1);
-                InitFood();
-            }
+            //bool outOfBoundaries =
+            //    snakePart.Row < 0 || snakePart.Row >= CellCount ||
+            //    snakePart.Col < 0 || snakePart.Col >= CellCount;
+            //if (outOfBoundaries)
+            //{
+            //    ChangeGameStatus(GameStatus.GameOver);
+            //    return;
+            //}
 
-            SetShape(snakeShape, snakePart.Row, snakePart.Col);
+            //bool food =
+            //    snakePart.Row == foodRow &&
+            //    snakePart.Col == foodCol;
+            //if (food)
+            //{
+            //    ChangePoints(points + 1);
+            //    InitFood();
+            //}
+
+            //SetShape(snakeShape, snakePart.Row, snakePart.Col);
         }
 
         private void SetShape(
@@ -197,7 +224,7 @@ namespace SnakeGame
                     return;
             }
 
-            ChangeSnakeDirection(direction);           
-        }        
+            ChangeSnakeDirection(direction);
+        }
     }
 }
