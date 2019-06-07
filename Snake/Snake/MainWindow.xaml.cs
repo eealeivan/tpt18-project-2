@@ -40,7 +40,7 @@ namespace SnakeGame
             ChangePoints(0);
 
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(0.5);
+            timer.Interval = TimeSpan.FromSeconds(0.25);
             timer.Tick += Timer_Tick;
             timer.Start();
 
