@@ -152,35 +152,45 @@ namespace SnakeGame
             }
 
             Location newHeadLocation =
-               new Location(newHeadRow, newHeadCol);
-            Rectangle newHead = snakeParts.Last.Value;
-            newHead.Tag = newHeadLocation;
+                new Location(newHeadRow, newHeadCol);
 
-            SetShape(newHead, newHeadRow, newHeadCol);
-            snakeParts.RemoveLast();
-            snakeParts.AddFirst(newHead);
+            bool outOfBoundaries =
+                newHeadRow < 0 || newHeadRow >= CellCount ||
+                newHeadCol < 0 || newHeadCol >= CellCount;
+            if (outOfBoundaries)
+            {
+                ChangeGameStatus(GameStatus.GameOver);
+                return;
+            }
 
+            bool food =
+                newHeadRow == foodRow &&
+                newHeadCol == foodCol;
+            if (food)
+            {
+                ChangePoints(points + 1);
+                InitFood();
 
+                Rectangle r = new Rectangle();
+                r.Height = CellSize;
+                r.Width = CellSize;
+                r.Fill = Brushes.MediumBlue;
+                Panel.SetZIndex(r, 10);
+                r.Tag = newHeadLocation;
 
-            //bool outOfBoundaries =
-            //    snakePart.Row < 0 || snakePart.Row >= CellCount ||
-            //    snakePart.Col < 0 || snakePart.Col >= CellCount;
-            //if (outOfBoundaries)
-            //{
-            //    ChangeGameStatus(GameStatus.GameOver);
-            //    return;
-            //}
+                SetShape(r, newHeadRow, newHeadCol);
+                board.Children.Add(r);
+                snakeParts.AddFirst(r);
+            }
+            else
+            {               
+                Rectangle newHead = snakeParts.Last.Value;
+                newHead.Tag = newHeadLocation;
 
-            //bool food =
-            //    snakePart.Row == foodRow &&
-            //    snakePart.Col == foodCol;
-            //if (food)
-            //{
-            //    ChangePoints(points + 1);
-            //    InitFood();
-            //}
-
-            //SetShape(snakeShape, snakePart.Row, snakePart.Col);
+                SetShape(newHead, newHeadRow, newHeadCol);
+                snakeParts.RemoveLast();
+                snakeParts.AddFirst(newHead);
+            }
         }
 
         private void SetShape(
