@@ -26,8 +26,6 @@ namespace SnakeGame
         int foodCol;
 
         Direction snakeDirection;
-        int snakeHeadRow;
-        int snakeHeadCol;
         LinkedList<Rectangle> snakeParts =
             new LinkedList<Rectangle>();
 
@@ -104,21 +102,18 @@ namespace SnakeGame
                 int row = index;
                 int col = index + i;
 
+                Location location = new Location(row, col);
+
                 Rectangle r = new Rectangle();
                 r.Height = CellSize;
                 r.Width = CellSize;
                 r.Fill = Brushes.MediumBlue;
                 Panel.SetZIndex(r, 10);
+                r.Tag = location;
 
                 SetShape(r, row, col);
                 board.Children.Add(r);
                 snakeParts.AddLast(r);
-
-                if(i == 0)
-                {
-                    snakeHeadRow = row;
-                    snakeHeadCol = col;
-                }
             }
 
             ChangeSnakeDirection(Direction.Left);
@@ -132,29 +127,40 @@ namespace SnakeGame
         }
 
         private void MoveSnake()
-        {            
-            Rectangle newHead = snakeParts.Last.Value;
-            snakeParts.RemoveLast();
+        {
+            Rectangle currentHead = snakeParts.First.Value;
+            Location currentHeadLocation =
+                (Location)currentHead.Tag;
 
-            snakeHeadCol--;
-            SetShape(newHead, snakeHeadRow, snakeHeadCol);
+            int newHeadRow = currentHeadLocation.Row;
+            int newHeadCol = currentHeadLocation.Col;
+
+            switch (snakeDirection)
+            {
+                case Direction.Up:
+                    newHeadRow--;
+                    break;
+                case Direction.Down:
+                    newHeadRow++;
+                    break;
+                case Direction.Left:
+                    newHeadCol--;
+                    break;
+                case Direction.Right:
+                    newHeadCol++;
+                    break;
+            }
+
+            Location newHeadLocation =
+               new Location(newHeadRow, newHeadCol);
+            Rectangle newHead = snakeParts.Last.Value;
+            newHead.Tag = newHeadLocation;
+
+            SetShape(newHead, newHeadRow, newHeadCol);
+            snakeParts.RemoveLast();
             snakeParts.AddFirst(newHead);
-                       
-            //switch (snakeDirection)
-            //{
-            //    case Direction.Up:
-            //        snakePart.Row--;
-            //        break;
-            //    case Direction.Down:
-            //        snakePart.Row++;
-            //        break;
-            //    case Direction.Left:
-            //        snakePart.Col--;
-            //        break;
-            //    case Direction.Right:
-            //        snakePart.Col++;
-            //        break;
-            //}
+
+
 
             //bool outOfBoundaries =
             //    snakePart.Row < 0 || snakePart.Row >= CellCount ||
