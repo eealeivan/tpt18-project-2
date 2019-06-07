@@ -96,11 +96,11 @@ namespace SnakeGame
             for (int i = 0; i < 3; i++)
             {
                 int row = index;
-                int col = index + i;               
+                int col = index + i;
 
                 Rectangle r = InitRectangle(
                     CellSize, row, col, Brushes.MediumBlue, 10);
-          
+
                 snakeParts.AddLast(r);
             }
 
@@ -109,7 +109,7 @@ namespace SnakeGame
 
         private void ChangeSnakeDirection(Direction direction)
         {
-            if(snakeDirection == Direction.Left && 
+            if (snakeDirection == Direction.Left &&
                direction == Direction.Right)
             {
                 return;
@@ -173,8 +173,25 @@ namespace SnakeGame
             }
 
             bool food =
-                newHeadRow == foodRow &&
-                newHeadCol == foodCol;
+               newHeadRow == foodRow &&
+               newHeadCol == foodCol;
+
+            foreach (Rectangle r in snakeParts)
+            {
+                if (!food && snakeParts.Last.Value == r)
+                {
+                    continue;
+                }
+
+                Location location = (Location)r.Tag;
+                if (location.Row == newHeadRow &&
+                   location.Col == newHeadCol)
+                {
+                    ChangeGameStatus(GameStatus.GameOver);
+                    return;
+                }
+            }
+
             if (food)
             {
                 ChangePoints(points + 1);
@@ -185,11 +202,11 @@ namespace SnakeGame
                     newHeadRow,
                     newHeadCol,
                     Brushes.MediumBlue,
-                    10);            
+                    10);
                 snakeParts.AddFirst(r);
             }
             else
-            {               
+            {
                 Rectangle newHead = snakeParts.Last.Value;
                 newHead.Tag = new Location(newHeadRow, newHeadCol);
 
