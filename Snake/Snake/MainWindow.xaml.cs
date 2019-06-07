@@ -59,12 +59,8 @@ namespace SnakeGame
 
                 for (int col = 0; col < CellCount; col++)
                 {
-                    Rectangle r = new Rectangle();
-                    r.Width = CellSize;
-                    r.Height = CellSize;
-                    r.Fill = color;
-                    SetShape(r, row, col);
-                    board.Children.Add(r);
+                    InitRectangle(
+                        CellSize, row, col, color, 0);
 
                     color = color == color1 ? color2 : color1;
                 }
@@ -100,19 +96,11 @@ namespace SnakeGame
             for (int i = 0; i < 3; i++)
             {
                 int row = index;
-                int col = index + i;
+                int col = index + i;               
 
-                Location location = new Location(row, col);
-
-                Rectangle r = new Rectangle();
-                r.Height = CellSize;
-                r.Width = CellSize;
-                r.Fill = Brushes.MediumBlue;
-                Panel.SetZIndex(r, 10);
-                r.Tag = location;
-
-                SetShape(r, row, col);
-                board.Children.Add(r);
+                Rectangle r = InitRectangle(
+                    CellSize, row, col, Brushes.MediumBlue, 10);
+          
                 snakeParts.AddLast(r);
             }
 
@@ -151,9 +139,6 @@ namespace SnakeGame
                     break;
             }
 
-            Location newHeadLocation =
-                new Location(newHeadRow, newHeadCol);
-
             bool outOfBoundaries =
                 newHeadRow < 0 || newHeadRow >= CellCount ||
                 newHeadCol < 0 || newHeadCol >= CellCount;
@@ -171,26 +156,43 @@ namespace SnakeGame
                 ChangePoints(points + 1);
                 InitFood();
 
-                Rectangle r = new Rectangle();
-                r.Height = CellSize;
-                r.Width = CellSize;
-                r.Fill = Brushes.MediumBlue;
-                Panel.SetZIndex(r, 10);
-                r.Tag = newHeadLocation;
-
-                SetShape(r, newHeadRow, newHeadCol);
-                board.Children.Add(r);
+                Rectangle r = InitRectangle(
+                    CellSize,
+                    newHeadRow,
+                    newHeadCol,
+                    Brushes.MediumBlue,
+                    10);            
                 snakeParts.AddFirst(r);
             }
             else
             {               
                 Rectangle newHead = snakeParts.Last.Value;
-                newHead.Tag = newHeadLocation;
+                newHead.Tag = new Location(newHeadRow, newHeadCol);
 
                 SetShape(newHead, newHeadRow, newHeadCol);
                 snakeParts.RemoveLast();
                 snakeParts.AddFirst(newHead);
             }
+        }
+
+        private Rectangle InitRectangle(
+            double size,
+            int row,
+            int col,
+            Brush fill,
+            int zIndex)
+        {
+            Rectangle r = new Rectangle();
+            r.Height = size;
+            r.Width = size;
+            r.Fill = fill;
+            Panel.SetZIndex(r, zIndex);
+            r.Tag = new Location(row, col);
+
+            SetShape(r, row, col);
+            board.Children.Add(r);
+
+            return r;
         }
 
         private void SetShape(
