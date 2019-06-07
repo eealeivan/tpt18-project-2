@@ -109,6 +109,30 @@ namespace SnakeGame
 
         private void ChangeSnakeDirection(Direction direction)
         {
+            if(snakeDirection == Direction.Left && 
+               direction == Direction.Right)
+            {
+                return;
+            }
+
+            if (snakeDirection == Direction.Right &&
+                direction == Direction.Left)
+            {
+                return;
+            }
+
+            if (snakeDirection == Direction.Up &&
+                direction == Direction.Down)
+            {
+                return;
+            }
+
+            if (snakeDirection == Direction.Down &&
+                direction == Direction.Up)
+            {
+                return;
+            }
+
             snakeDirection = direction;
             lblSnakeDirection.Content =
                 $"Direction: {direction}";
